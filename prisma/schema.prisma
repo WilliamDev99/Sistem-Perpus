@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum BorrowStatus {
+  PENDING
+  BORROWED
+  RETURNED
+  OVERDUE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  password     String
+  role         Role     @default(MEMBER)
+  phone        String?
+  address      String?
+  profileImage String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  borrows      Borrow[]
+
+  @@map("users")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  books     Book[]
+
+  @@map("categories")
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  author      String
+  publisher   String
+  year        Int
+  isbn        String   @unique
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  stock       Int      @default(0)
+  coverImage  String?
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  borrows     Borrow[]
+
+  @@index([categoryId])
+  @@index([title])
+  @@map("books")
+}
+
+model Borrow {
+  id         String       @id @default(cuid())
+  userId     String
+  user       User         @relation(fields: [userId], references: [id])
+  bookId     String
+  book       Book         @relation(fields: [bookId], references: [id])
+  borrowDate DateTime     @default(now())
+  dueDate    DateTime
+  returnDate DateTime?
+  status     BorrowStatus @default(PENDING)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  fine       Fine?
+
+  @@index([userId])
+  @@index([bookId])
+  @@map("borrows")
+}
+
+model Fine {
+  id        String    @id @default(cuid())
+  borrowId  String    @unique
+  borrow    Borrow    @relation(fields: [borrowId], references: [id])
+  amount    Float     @default(0)
+  paid      Boolean   @default(false)
+  paidAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@map("fines")
+}
