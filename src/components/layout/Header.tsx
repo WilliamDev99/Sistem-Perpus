@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Menu, Bell, LogOut, User } from "lucide-react";
 import { useNotificationStore } from "@/store/notification-store";
 import NotificationPanel from "@/components/notifications/NotificationPanel";
+import Link from "next/link";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -68,9 +69,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             {isOpen && <NotificationPanel />}
           </div>
           
-          <button className="text-slate-500 hover:text-red-500 transition-colors cursor-pointer duration-200">
-            <span className="material-symbols-outlined">settings</span>
-          </button>
+
           
           <div className="relative group">
             <div className="h-8 w-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center overflow-hidden border border-primary-fixed cursor-pointer">

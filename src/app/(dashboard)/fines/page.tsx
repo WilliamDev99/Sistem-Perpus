@@ -68,6 +68,28 @@ export default function FinesPage() {
     }
   };
 
+  const [payingAll, setPayingAll] = useState(false);
+
+  const handlePayAll = async () => {
+    if (!confirm("Tandai SEMUA denda tercatat sebagai lunas?")) return;
+    setPayingAll(true);
+    setMessage({ type: "", text: "" });
+    try {
+      const res = await fetch("/api/fines/pay-all", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        setMessage({ type: "success", text: data.message || "Semua denda berhasil ditandai lunas" });
+        fetchFines();
+      } else {
+        setMessage({ type: "error", text: data.error || "Gagal memproses" });
+      }
+    } catch {
+      setMessage({ type: "error", text: "Terjadi kesalahan" });
+    } finally {
+      setPayingAll(false);
+    }
+  };
+
   if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-3 border-red-200 border-t-red-600 rounded-full animate-spin" /></div>;
 
   const runningFines = fines.filter(f => f.isRunning);
@@ -77,11 +99,23 @@ export default function FinesPage() {
 
   return (
     <div className="space-y-6 fade-in">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-800">{isAdmin ? "Manajemen Denda" : "Denda Saya"}</h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Total denda belum dibayar: {formatCurrency(totalUnpaid)}
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800">{isAdmin ? "Manajemen Denda" : "Denda Saya"}</h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Total denda belum dibayar: {formatCurrency(totalUnpaid)}
+          </p>
+        </div>
+        {isAdmin && actualFines.filter(f => !f.paid).length > 0 && (
+          <button
+            onClick={handlePayAll}
+            disabled={payingAll}
+            className="btn btn-primary text-sm"
+          >
+            {payingAll ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+            Tandai Semua Lunas
+          </button>
+        )}
       </div>
 
       {message.text && (
@@ -116,6 +150,7 @@ export default function FinesPage() {
                   <th>Hari Terlambat</th>
                   <th>Denda Sementara</th>
                   <th>Status</th>
+                  {isAdmin && <th>Aksi</th>}
                 </tr>
               </thead>
               <tbody>
@@ -146,6 +181,19 @@ export default function FinesPage() {
                         Berjalan
                       </span>
                     </td>
+                    {isAdmin && (
+                      <td>
+                        <button
+                          onClick={() => handlePay(f.id)}
+                          disabled={payingId === f.id}
+                          className="btn btn-primary btn-sm whitespace-nowrap"
+                          title="Lunas sekaligus kembalikan buku"
+                        >
+                          {payingId === f.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
+                          Tandai Lunas
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

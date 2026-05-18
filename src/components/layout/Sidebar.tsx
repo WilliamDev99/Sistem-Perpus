@@ -106,10 +106,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </nav>
 
           <div className="px-6 mt-auto">
-            <button className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-transparent border border-outline text-on-surface-variant rounded font-label-md hover:bg-surface-variant transition-colors duration-150">
+            <a 
+              href="mailto:support@dispusip.tanatorajakab.go.id?subject=Bantuan%20Sistem%20Perpustakaan"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-transparent border border-outline text-on-surface-variant rounded font-label-md hover:bg-surface-variant transition-colors duration-150"
+            >
               <span className="material-symbols-outlined text-[20px]">help</span>
               Get Support
-            </button>
+            </a>
           </div>
         </aside>
       </>

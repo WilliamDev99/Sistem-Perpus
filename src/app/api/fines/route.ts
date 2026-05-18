@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     // 2. Get overdue borrows that DON'T have a fine yet (still borrowed)
     const overdueBorrowWhere: Record<string, unknown> = {
-      status: "OVERDUE",
+      status: { in: ["OVERDUE", "BORROWED"] },
       dueDate: { lt: new Date() },
       fine: null, // No fine record yet
     };

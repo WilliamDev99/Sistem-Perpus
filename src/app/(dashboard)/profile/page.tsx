@@ -37,6 +37,14 @@ export default function ProfilePage() {
     address: "",
   });
 
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [passwordLoading, setPasswordLoading] = useState(false);
+
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -145,6 +153,42 @@ export default function ProfilePage() {
       showToast("error", "Terjadi kesalahan");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      showToast("error", "Password baru dan konfirmasi tidak cocok");
+      return;
+    }
+    if (passwordForm.newPassword.length < 6) {
+      showToast("error", "Password baru minimal 6 karakter");
+      return;
+    }
+    
+    setPasswordLoading(true);
+    try {
+      const res = await fetch("/api/users/profile/password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast("success", "Password berhasil diubah!");
+        setShowPasswordModal(false);
+        setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      } else {
+        showToast("error", data.error || "Gagal mengubah password");
+      }
+    } catch {
+      showToast("error", "Terjadi kesalahan saat mengubah password");
+    } finally {
+      setPasswordLoading(false);
     }
   };
 
@@ -438,13 +482,83 @@ export default function ProfilePage() {
                 <div>
                   <h4 className="font-label-md text-label-md text-on-surface">Password</h4>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
-                    Terakhir diubah 3 bulan yang lalu
+                    Ganti password akun Anda secara berkala untuk keamanan.
                   </p>
                 </div>
-                <button className="px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors ease-in-out duration-150">
+                <button 
+                  onClick={() => setShowPasswordModal(true)}
+                  className="px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors ease-in-out duration-150"
+                >
                   Ganti Password
                 </button>
               </div>
+
+              {/* Password Modal / Inline Form */}
+              {showPasswordModal && (
+                <form onSubmit={handlePasswordChange} className="mt-6 pt-6 border-t border-surface-container flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-300">
+                  <h4 className="font-label-md text-label-md text-on-surface mb-2">Formulir Penggantian Password</h4>
+                  
+                  <div>
+                    <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Password Saat Ini</label>
+                    <input
+                      required
+                      type="password"
+                      value={passwordForm.currentPassword}
+                      onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                      className="w-full bg-surface-bright border border-outline-variant rounded-lg px-4 py-2 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow"
+                      placeholder="Masukkan password Anda saat ini"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Password Baru</label>
+                      <input
+                        required
+                        type="password"
+                        minLength={6}
+                        value={passwordForm.newPassword}
+                        onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                        className="w-full bg-surface-bright border border-outline-variant rounded-lg px-4 py-2 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow"
+                        placeholder="Minimal 6 karakter"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">Konfirmasi Password Baru</label>
+                      <input
+                        required
+                        type="password"
+                        minLength={6}
+                        value={passwordForm.confirmPassword}
+                        onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                        className="w-full bg-surface-bright border border-outline-variant rounded-lg px-4 py-2 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow"
+                        placeholder="Ulangi password baru"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end gap-3 mt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowPasswordModal(false);
+                        setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+                      }}
+                      className="px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={passwordLoading}
+                      className="px-6 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary/80 transition-colors disabled:opacity-50 flex items-center gap-2"
+                    >
+                      {passwordLoading && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+                      Simpan Password
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>

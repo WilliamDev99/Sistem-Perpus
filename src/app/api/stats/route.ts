@@ -51,10 +51,11 @@ export async function GET() {
               ORDER BY month ASC
             `,
         // Get overdue borrows without fines for running fine calculation
+        // Include both OVERDUE status AND BORROWED status with past due date
         prisma.borrow.findMany({
           where: {
             ...borrowWhere,
-            status: "OVERDUE",
+            status: { in: ["OVERDUE", "BORROWED"] },
             dueDate: { lt: new Date() },
             fine: null,
           },

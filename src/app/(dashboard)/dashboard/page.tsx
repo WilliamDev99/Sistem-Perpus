@@ -200,6 +200,15 @@ export default function DashboardPage() {
   };
 
   const getMemberStatusBadge = (status: string, dueDate: string) => {
+    if (status === "RETURNED") {
+      return (
+        <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-100 text-emerald-700 font-label-sm text-label-sm">
+          <span className="material-symbols-outlined text-[14px]">check_circle</span>
+          Dikembalikan
+        </span>
+      );
+    }
+
     const now = new Date();
     const due = new Date(dueDate);
     const diffMs = due.getTime() - now.getTime();
@@ -276,9 +285,18 @@ export default function DashboardPage() {
                 <span className="material-symbols-outlined text-[24px]">menu_book</span>
               </div>
             </div>
-            <p className="font-body-sm text-body-sm text-secondary flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">check_circle</span>
-              Semua dalam batas waktu
+            <p className="font-body-sm text-body-sm flex items-center gap-1">
+              {(stats?.overdueBorrowCount || 0) > 0 ? (
+                <>
+                  <span className="material-symbols-outlined text-[16px] text-error">warning</span>
+                  <span className="text-error">{stats?.overdueBorrowCount} buku terlambat</span>
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined text-[16px] text-secondary">check_circle</span>
+                  <span className="text-secondary">Semua dalam batas waktu</span>
+                </>
+              )}
             </p>
           </div>
 
