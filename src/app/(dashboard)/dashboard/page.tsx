@@ -34,6 +34,7 @@ interface DashboardStats {
   totalUsers: number;
   activeBorrows: number;
   pendingBorrows: number;
+  overdueBorrowCount: number;
   pendingFines: number;
   totalFineAmount: number;
   monthlyBorrows: Array<{ month: string; count: number | bigint }>;
@@ -286,15 +287,24 @@ export default function DashboardPage() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Buku Terlambat</p>
-                <h3 className="font-h1 text-h1 text-error">0</h3>
+                <h3 className="font-h1 text-h1 text-error">{stats?.overdueBorrowCount || 0}</h3>
               </div>
               <div className="w-12 h-12 rounded-lg bg-error/10 flex items-center justify-center text-error">
                 <span className="material-symbols-outlined text-[24px]">assignment_late</span>
               </div>
             </div>
             <p className="font-body-sm text-body-sm text-outline flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">thumb_up</span>
-              Tidak ada denda
+              {(stats?.overdueBorrowCount || 0) > 0 ? (
+                <>
+                  <span className="material-symbols-outlined text-[16px] text-error">warning</span>
+                  <span className="text-error">Denda {formatCurrency(stats?.totalFineAmount || 0)}</span>
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined text-[16px]">thumb_up</span>
+                  Tidak ada denda
+                </>
+              )}
             </p>
           </div>
 

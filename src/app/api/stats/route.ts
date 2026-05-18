@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
+import { FINE_PER_DAY } from "@/lib/constants";
 
 // GET /api/stats - Dashboard statistics
 export async function GET() {
@@ -20,7 +21,7 @@ export async function GET() {
     const borrowWhere = isAdmin ? {} : { userId };
     const fineWhere = isAdmin ? { paid: false } : { borrow: { userId }, paid: false };
 
-    const [totalBooks, totalUsers, activeBorrows, pendingBorrows, fines, monthlyBorrows] =
+    const [totalBooks, totalUsers, activeBorrows, pendingBorrows, fines, monthlyBorrows, overdueBorrows] =
       await Promise.all([
         prisma.book.count(), // Total books is always global
         isAdmin ? prisma.user.count({ where: { role: "MEMBER" } }) : Promise.resolve(0),
@@ -49,7 +50,29 @@ export async function GET() {
               GROUP BY DATE_FORMAT(borrowDate, '%Y-%m')
               ORDER BY month ASC
             `,
+        // Get overdue borrows without fines for running fine calculation
+        prisma.borrow.findMany({
+          where: {
+            ...borrowWhere,
+            status: "OVERDUE",
+            dueDate: { lt: new Date() },
+            fine: null,
+          },
+          select: { dueDate: true },
+        }),
       ]);
+
+    // Calculate running fines from overdue borrows
+    const now = new Date();
+    let runningFineAmount = 0;
+    for (const borrow of overdueBorrows) {
+      const dueDate = new Date(borrow.dueDate);
+      const diffDays = Math.ceil((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24));
+      runningFineAmount += diffDays * FINE_PER_DAY;
+    }
+
+    const totalFineAmount = (fines._sum.amount || 0) + runningFineAmount;
+    const totalFineCount = fines._count + overdueBorrows.length;
 
     return NextResponse.json({
       success: true,
@@ -58,8 +81,9 @@ export async function GET() {
         totalUsers,
         activeBorrows,
         pendingBorrows,
-        pendingFines: fines._count,
-        totalFineAmount: fines._sum.amount || 0,
+        overdueBorrowCount: overdueBorrows.length,
+        pendingFines: totalFineCount,
+        totalFineAmount,
         monthlyBorrows: (monthlyBorrows as any[]).map(m => ({
           ...m,
           count: Number(m.count)
