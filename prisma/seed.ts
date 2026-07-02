@@ -176,48 +176,48 @@ async function main() {
       description: "Modul pengantar ilmu arkeologi untuk mahasiswa tingkat awal." 
     },
     { 
-      title: "Dasar Pemrograman Bahasa C", 
-      author: "Yudhi Purwanto", 
-      publisher: "Elex Media Komputindo", 
-      year: 2015, 
+      title: "Akuntansi Keuangan Menengah Berbasis PSAK", 
+      author: "Dwi Martani, dkk", 
+      publisher: "Salemba Empat", 
+      year: 2018, 
       isbn: "978979134571", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Bisnis"], 
       stock: 4, 
       coverImage: "/api/uploads/1778248166460-wgzvggt.jpg",
-      description: "Dasar-dasar logika pemrograman menggunakan sintaks bahasa C." 
+      description: "Panduan lengkap akuntansi keuangan menengah berbasis PSAK terbaru." 
     },
     { 
-      title: "Pemrograman Web dengan Node.js dan Javascript", 
-      author: "Budi Raharjo", 
-      publisher: "Informatika", 
-      year: 2018, 
+      title: "Buku Ajar Akuntansi Perbankan", 
+      author: "Lanny Widjaja", 
+      publisher: "Salemba Empat", 
+      year: 2016, 
       isbn: "978979134572", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Bisnis"], 
       stock: 5, 
       coverImage: "/api/uploads/1778247905719-b7u9s1o.jpg",
-      description: "Panduan membangun backend serverless dan website dinamis dengan Node.js." 
+      description: "Buku ajar penyusunan laporan keuangan perbankan." 
     },
     { 
-      title: "Kamus Istilah Komputer Lengkap", 
-      author: "Jacko Pramana", 
-      publisher: "Kawan Pustaka", 
-      year: 2013, 
+      title: "Pengantar Akuntansi II", 
+      author: "Carl S. Warren", 
+      publisher: "Salemba Empat", 
+      year: 2015, 
       isbn: "978979134573", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Bisnis"], 
       stock: 6, 
       coverImage: "/api/uploads/1778247735527-f2cfi0j.jpg",
-      description: "Kamus lengkap referensi istilah-istilah di bidang komputer dan IT." 
+      description: "Materi dasar akuntansi lanjutan edisi adaptasi Indonesia." 
     },
     { 
-      title: "Pengantar Teknologi Informasi", 
-      author: "Tata Sutabri", 
-      publisher: "Andi Offset", 
-      year: 2014, 
+      title: "Buku Ajar Akuntansi (Pengantar & Penerapannya)", 
+      author: "Hery, S.E., M.Si.", 
+      publisher: "Grasindo", 
+      year: 2015, 
       isbn: "978979134574", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Bisnis"], 
       stock: 7, 
       coverImage: "/api/uploads/1778247503273-k4ihntf.jpeg",
-      description: "Pengenalan teknologi informasi masa kini serta infrastruktur jaringan dasar." 
+      description: "Dasar pemahaman pembukuan keuangan untuk pemula dan bisnis." 
     },
   ];
 
