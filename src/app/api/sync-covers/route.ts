@@ -1,45 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
+import { mkdir, copyFile, readdir } from "fs/promises";
 import path from "path";
 import fs from "fs";
-import AdmZip from "adm-zip";
 
-// POST /api/sync-covers - Receive a zip file and extract it directly into the uploads volume
-export async function POST(request: NextRequest) {
+// GET /api/sync-covers - Copy all git-committed cover images to the persistent volume
+export async function GET(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    const file = formData.get("file") as File | null;
+    const gitUploadsDir = path.join(process.cwd(), "public", "uploads");
+    const persistentDir = "/app/storage/uploads";
 
-    if (!file) {
-      return NextResponse.json({ success: false, error: "File zip tidak ditemukan" }, { status: 400 });
+    // Ensure persistent storage directory exists
+    await mkdir(persistentDir, { recursive: true });
+
+    console.log(`Syncing files from ${gitUploadsDir} to ${persistentDir}...`);
+
+    if (!fs.existsSync(gitUploadsDir)) {
+      return NextResponse.json({ success: false, error: "Folder public/uploads bawaan tidak ditemukan" }, { status: 404 });
     }
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
+    const files = await readdir(gitUploadsDir);
+    let copiedCount = 0;
 
-    const zipPath = path.join(uploadDir, "temp_uploads.zip");
-    const bytes = await file.arrayBuffer();
-    await writeFile(zipPath, Buffer.from(bytes));
-
-    console.log("Extracting uploaded zip into Railway volume...");
-
-    // Extract zip file using adm-zip
-    const zip = new AdmZip(zipPath);
-    zip.extractAllTo(uploadDir, true);
-
-    // Delete temp zip file
-    fs.unlinkSync(zipPath);
-
-    console.log("Successfully extracted all local cover images to Volume!");
+    for (const file of files) {
+      if (file === ".gitkeep") continue;
+      
+      const srcPath = path.join(gitUploadsDir, file);
+      const destPath = path.join(persistentDir, file);
+      
+      // Copy each file to persistent volume if not already exists
+      if (!fs.existsSync(destPath)) {
+        await copyFile(srcPath, destPath);
+        copiedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: "Berhasil mengunggah dan mengekstrak semua gambar sampul asli ke Volume Railway!",
+      message: `Berhasil menyalin ${copiedCount} gambar sampul asli dari Git ke Volume Permanen.`,
+      totalFiles: files.length - 1
     });
   } catch (error: any) {
-    console.error("Extraction error:", error);
+    console.error("Sync error:", error);
     return NextResponse.json(
-      { success: false, error: "Gagal memproses file zip: " + error.message },
+      { success: false, error: "Gagal menyalin file: " + error.message },
       { status: 500 }
     );
   }

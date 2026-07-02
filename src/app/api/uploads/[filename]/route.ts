@@ -9,19 +9,16 @@ export async function GET(
 ) {
   try {
     const { filename } = await params;
-    // Use Railway persistent volume path in production, fallback to public/uploads in development
-    const uploadDir = process.env.NODE_ENV === "production" 
-      ? "/app/storage/uploads"
-      : path.join(process.cwd(), "public", "uploads");
-      
+    // Serve directly from the public/uploads directory where Git assets are deployed
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
     const filepath = path.join(uploadDir, filename);
 
     let fileBuffer;
     try {
       fileBuffer = await readFile(filepath);
     } catch (readError) {
-      // Fallback: If not found in Railway storage volume, try to read from the static public/uploads folder (deployed from Git)
-      const fallbackPath = path.join(process.cwd(), "public", "uploads", filename);
+      // Fallback: If not found in public/uploads, try the Railway persistent storage volume
+      const fallbackPath = path.join("/app/storage/uploads", filename);
       fileBuffer = await readFile(fallbackPath);
     }
     
