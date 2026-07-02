@@ -73,7 +73,7 @@ async function main() {
       isbn: "978979134561", 
       categoryId: categories["Agama"], 
       stock: 5, 
-      coverImage: "/uploads/1778274321468-oc8ruow.jpg",
+      coverImage: "/api/uploads/1778274321468-oc8ruow.jpg",
       description: "Analisis mendalam mengenai makna dan hakikat seni dari perspektif filsafat." 
     },
     { 
@@ -84,7 +84,7 @@ async function main() {
       isbn: "978979134562", 
       categoryId: categories["Non-Fiksi"], 
       stock: 4, 
-      coverImage: "/uploads/1778274103323-f8kmpa4.jpg",
+      coverImage: "/api/uploads/1778274103323-f8kmpa4.jpg",
       description: "Buku pengantar untuk memahami nilai-nilai keindahan seni dan budaya." 
     },
     { 
@@ -95,7 +95,7 @@ async function main() {
       isbn: "978979134563", 
       categoryId: categories["Sejarah"], 
       stock: 3, 
-      coverImage: "/uploads/1778273869769-x2m940k.jpg",
+      coverImage: "/api/uploads/1778273869769-x2m940k.jpg",
       description: "Perkembangan teori keindahan seni dari zaman klasik hingga postmodern." 
     },
     { 
@@ -106,7 +106,7 @@ async function main() {
       isbn: "978979134564", 
       categoryId: categories["Sejarah"], 
       stock: 3, 
-      coverImage: "/uploads/1778273703422-bq65zuv.jpg",
+      coverImage: "/api/uploads/1778273703422-bq65zuv.jpg",
       description: "Buku pertama dari seri sejarah kebudayaan Indonesia, membahas zaman prasejarah." 
     },
     { 
@@ -117,7 +117,7 @@ async function main() {
       isbn: "978979134565", 
       categoryId: categories["Sejarah"], 
       stock: 4, 
-      coverImage: "/uploads/1778273479722-znv6i3o.jpg",
+      coverImage: "/api/uploads/1778273479722-znv6i3o.jpg",
       description: "Buku kedua dari seri sejarah kebudayaan Indonesia, membahas pengaruh kebudayaan Hindu-Buddha." 
     },
     { 
@@ -128,7 +128,7 @@ async function main() {
       isbn: "978979134566", 
       categoryId: categories["Sejarah"], 
       stock: 5, 
-      coverImage: "/uploads/1778273381761-e7em7dl.jpg",
+      coverImage: "/api/uploads/1778273381761-e7em7dl.jpg",
       description: "Buku ketiga dari seri sejarah kebudayaan Indonesia, membahas kebudayaan Islam dan perkembangannya." 
     },
     { 
@@ -139,7 +139,7 @@ async function main() {
       isbn: "978979134567", 
       categoryId: categories["Teknologi"], 
       stock: 3, 
-      coverImage: "/uploads/1778249278115-vp81ju3.jpg",
+      coverImage: "/api/uploads/1778249278115-vp81ju3.jpg",
       description: "Struktur internal, organisasi, dan desain sistem komputer modern." 
     },
     { 
@@ -150,7 +150,7 @@ async function main() {
       isbn: "978979134568", 
       categoryId: categories["Sejarah"], 
       stock: 2, 
-      coverImage: "/uploads/1778248981675-8llyoim.jpg",
+      coverImage: "/api/uploads/1778248981675-8llyoim.jpg",
       description: "Terjemahan karya klasik Michel Foucault tentang epistemologi wacana." 
     },
     { 
@@ -161,7 +161,7 @@ async function main() {
       isbn: "978979134569", 
       categoryId: categories["Sejarah"], 
       stock: 4, 
-      coverImage: "/uploads/1778248659400-23f6c5d.jpg",
+      coverImage: "/api/uploads/1778248659400-23f6c5d.jpg",
       description: "Metodologi riset arkeologi dan tata cara penggalian artefak kuno." 
     },
     { 
@@ -172,7 +172,7 @@ async function main() {
       isbn: "978979134570", 
       categoryId: categories["Sejarah"], 
       stock: 5, 
-      coverImage: "/uploads/1778248557553-7husnga.png",
+      coverImage: "/api/uploads/1778248557553-7husnga.png",
       description: "Modul pengantar ilmu arkeologi untuk mahasiswa tingkat awal." 
     },
     { 
@@ -183,7 +183,7 @@ async function main() {
       isbn: "978979134571", 
       categoryId: categories["Teknologi"], 
       stock: 4, 
-      coverImage: "/uploads/1778248166460-wgzvggt.jpg",
+      coverImage: "/api/uploads/1778248166460-wgzvggt.jpg",
       description: "Dasar-dasar logika pemrograman menggunakan sintaks bahasa C." 
     },
     { 
@@ -194,7 +194,7 @@ async function main() {
       isbn: "978979134572", 
       categoryId: categories["Teknologi"], 
       stock: 5, 
-      coverImage: "/uploads/1778247905719-b7u9s1o.jpg",
+      coverImage: "/api/uploads/1778247905719-b7u9s1o.jpg",
       description: "Panduan membangun backend serverless dan website dinamis dengan Node.js." 
     },
     { 
@@ -205,7 +205,7 @@ async function main() {
       isbn: "978979134573", 
       categoryId: categories["Teknologi"], 
       stock: 6, 
-      coverImage: "/uploads/1778247735527-f2cfi0j.jpg",
+      coverImage: "/api/uploads/1778247735527-f2cfi0j.jpg",
       description: "Kamus lengkap referensi istilah-istilah di bidang komputer dan IT." 
     },
     { 
@@ -216,7 +216,7 @@ async function main() {
       isbn: "978979134574", 
       categoryId: categories["Teknologi"], 
       stock: 7, 
-      coverImage: "/uploads/1778247503273-k4ihntf.jpeg",
+      coverImage: "/api/uploads/1778247503273-k4ihntf.jpeg",
       description: "Pengenalan teknologi informasi masa kini serta infrastruktur jaringan dasar." 
     },
   ];
