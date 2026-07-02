@@ -44,8 +44,11 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Create uploads directory if not exists
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    // Use Railway persistent volume path in production, fallback to public/uploads in development
+    const uploadDir = process.env.NODE_ENV === "production"
+      ? "/app/storage/uploads"
+      : path.join(process.cwd(), "public", "uploads");
+      
     await mkdir(uploadDir, { recursive: true });
 
     // Generate unique filename

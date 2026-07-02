@@ -9,10 +9,21 @@ export async function GET(
 ) {
   try {
     const { filename } = await params;
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    // Use Railway persistent volume path in production, fallback to public/uploads in development
+    const uploadDir = process.env.NODE_ENV === "production" 
+      ? "/app/storage/uploads"
+      : path.join(process.cwd(), "public", "uploads");
+      
     const filepath = path.join(uploadDir, filename);
 
-    const fileBuffer = await readFile(filepath);
+    let fileBuffer;
+    try {
+      fileBuffer = await readFile(filepath);
+    } catch (readError) {
+      // Fallback: If not found in Railway storage volume, try to read from the static public/uploads folder (deployed from Git)
+      const fallbackPath = path.join(process.cwd(), "public", "uploads", filename);
+      fileBuffer = await readFile(fallbackPath);
+    }
     
     // Determine content type based on extension
     const ext = path.extname(filename).toLowerCase();
