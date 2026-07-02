@@ -3,20 +3,37 @@ import path from "path";
 import axios from "axios";
 import FormData from "form-data";
 
-async function syncImages() {
-  const localDir = "c:/Users/PC/OneDrive/Desktop/Sistem Perpustakaan/public/uploads";
-  const targetDomain = "https://sistem-perpus-production.up.railway.app";
-  const files = fs.readdirSync(localDir).filter(f => f !== ".gitkeep");
+async function uploadZip() {
+  const localZipPath = "c:/Users/PC/OneDrive/Desktop/Sistem Perpustakaan/public/uploads.zip";
+  const targetUrl = "https://sistem-perpus-production.up.railway.app/api/sync-covers";
 
-  console.log(`Starting sync for ${files.length} images to ${targetDomain}...`);
+  console.log(`Uploading ${localZipPath} to ${targetUrl}...`);
 
-  for (const file of files) {
-    const filePath = path.join(localDir, file);
-    
-    // We will bypass NextAuth by calling a special internal utility, but since we are running locally, 
-    // we can actually just upload them via SFTP or simple HTTP post if we have an endpoint.
-    // However, since we have the DATABASE_URL, we can write the files directly if we run a script inside the Railway SSH console.
-    // A simpler way: we can read the file buffer and send it if we create a temporary sync endpoint,
-    // OR we can just write a script that runs locally and uses SSH/SCP to copy files.
+  if (!fs.existsSync(localZipPath)) {
+    console.error("Local zip file not found! Execute zip command first.");
+    return;
+  }
+
+  const form = new FormData();
+  form.append("file", fs.createReadStream(localZipPath));
+
+  try {
+    const response = await axios.post(targetUrl, form, {
+      headers: form.getHeaders(),
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    });
+
+    console.log("Success Response:", response.data);
+  } catch (error: any) {
+    console.error("Upload failed!");
+    if (error.response) {
+      console.error(`Status: ${error.response.status}`);
+      console.error("Data:", error.response.data);
+    } else {
+      console.error(error.message);
+    }
   }
 }
+
+uploadZip();
