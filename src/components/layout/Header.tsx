@@ -33,24 +33,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
   if (!isAdmin) {
     return (
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-8 h-16 w-full font-['Inter'] text-base">
-        <div className="flex items-center lg:hidden">
-          <button onClick={onMenuClick} className="mr-3 text-slate-500 hover:text-red-600">
+        <div className="flex items-center flex-1">
+          <button onClick={onMenuClick} className="mr-3 text-slate-500 hover:text-red-600 lg:hidden">
             <span className="material-symbols-outlined">menu</span>
           </button>
-          <img src="/logo-dispusip.jpg" alt="DISPUSIP" className="w-8 h-8 rounded-full object-contain mr-2" />
-          <span className="text-lg font-semibold text-slate-900 font-h3">DISPUSIP Tana Toraja</span>
-        </div>
-        
-        <div className="hidden lg:flex items-center gap-4 flex-1">
-          <img src="/logo-dispusip.jpg" alt="DISPUSIP" className="w-9 h-9 rounded-full object-contain flex-shrink-0" />
-          <div className="relative w-full max-w-md">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
-            <input 
-              className="w-full pl-10 pr-4 py-2 bg-surface-container-low border-transparent focus:border-primary focus:ring-1 focus:ring-primary rounded-full font-body-sm text-on-surface outline-none transition-all" 
-              placeholder="Cari buku, penulis..." 
-              type="text"
-            />
-          </div>
+          <img src="/logo-dispusip.jpg" alt="DISPUSIP" className="w-8 h-8 lg:w-9 lg:h-9 rounded-full object-contain mr-2 lg:mr-3" />
+          <span className="text-lg font-semibold text-slate-900 font-h3 hidden sm:block">DISPUSIP Tana Toraja</span>
         </div>
 
         <div className="flex items-center gap-4 ml-auto">
