@@ -51,7 +51,7 @@ async function main() {
   console.log("✅ Member created:", member.email);
 
   // Create categories
-  const categoryNames = ["Fiksi", "Non-Fiksi", "Sains", "Teknologi", "Sejarah", "Bisnis", "Pendidikan", "Agama", "Hukum"];
+  const categoryNames = ["Sains", "Informatika", "Sejarah", "Ekonomi", "Pendidikan", "Filsafat", "Hukum"];
   const categories: Record<string, string> = {};
   for (const name of categoryNames) {
     const cat = await prisma.category.upsert({
@@ -71,7 +71,7 @@ async function main() {
       publisher: "Elex Media Komputindo", 
       year: 2015, 
       isbn: "978979134561", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Informatika"], 
       stock: 5, 
       coverImage: "/api/uploads/Dasar Pemograman Dalam Bahasa C.jpg",
       description: "Dasar-dasar logika pemrograman menggunakan sintaks bahasa C." 
@@ -82,7 +82,7 @@ async function main() {
       publisher: "Andi Offset", 
       year: 2014, 
       isbn: "978979134562", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Informatika"], 
       stock: 4, 
       coverImage: "/api/uploads/Dasar-Dasar Teknik informatika.jpg",
       description: "Pengenalan teknologi informasi masa kini serta infrastruktur jaringan dasar." 
@@ -93,7 +93,7 @@ async function main() {
       publisher: "Informatika", 
       year: 2018, 
       isbn: "978979134563", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Informatika"], 
       stock: 6, 
       coverImage: "/api/uploads/Pembelajaran Informatika.jpg",
       description: "Buku pembelajaran komputasi dan pemecahan masalah algoritma." 
@@ -104,7 +104,7 @@ async function main() {
       publisher: "Informatika", 
       year: 2014, 
       isbn: "978979134564", 
-      categoryId: categories["Teknologi"], 
+      categoryId: categories["Informatika"], 
       stock: 3, 
       coverImage: "/api/uploads/Arsiktektur Sistem Komputer.jpg",
       description: "Struktur internal, organisasi, dan desain sistem komputer modern." 
@@ -137,7 +137,7 @@ async function main() {
       publisher: "Salemba Empat", 
       year: 2016, 
       isbn: "978979134567", 
-      categoryId: categories["Bisnis"], 
+      categoryId: categories["Ekonomi"], 
       stock: 5, 
       coverImage: "/api/uploads/Pegantar Ekonomi.jpg",
       description: "Buku pengantar dasar-dasar teori ekonomi mikro dan makro." 
@@ -148,7 +148,7 @@ async function main() {
       publisher: "Salemba Empat", 
       year: 2018, 
       isbn: "978979134568", 
-      categoryId: categories["Bisnis"], 
+      categoryId: categories["Ekonomi"], 
       stock: 4, 
       coverImage: "/api/uploads/Ekonomi Pembagunan.jpg",
       description: "Analisis isu-isu pembangunan ekonomi di Indonesia." 
@@ -159,7 +159,7 @@ async function main() {
       publisher: "Salemba Empat", 
       year: 2015, 
       isbn: "978979134569", 
-      categoryId: categories["Bisnis"], 
+      categoryId: categories["Ekonomi"], 
       stock: 6, 
       coverImage: "/api/uploads/pegantar akuntansi 2.jpg",
       description: "Materi dasar akuntansi lanjutan edisi adaptasi Indonesia." 
@@ -170,7 +170,7 @@ async function main() {
       publisher: "Salemba Empat", 
       year: 2018, 
       isbn: "978979134570", 
-      categoryId: categories["Bisnis"], 
+      categoryId: categories["Ekonomi"], 
       stock: 4, 
       coverImage: "/api/uploads/Akuntansi keuangan berbasis psak.jpg",
       description: "Panduan lengkap akuntansi keuangan menengah berbasis PSAK terbaru." 
@@ -181,7 +181,7 @@ async function main() {
       publisher: "Salemba Empat", 
       year: 2016, 
       isbn: "978979134571", 
-      categoryId: categories["Bisnis"], 
+      categoryId: categories["Ekonomi"], 
       stock: 5, 
       coverImage: "/api/uploads/akuntansi perbankan.jpg",
       description: "Buku ajar penyusunan laporan keuangan perbankan." 
@@ -192,7 +192,7 @@ async function main() {
       publisher: "Grasindo", 
       year: 2015, 
       isbn: "978979134572", 
-      categoryId: categories["Bisnis"], 
+      categoryId: categories["Ekonomi"], 
       stock: 7, 
       coverImage: "/api/uploads/buku ajar akuntansi.jpeg",
       description: "Dasar pemahaman pembukuan keuangan untuk pemula dan bisnis." 
@@ -203,7 +203,7 @@ async function main() {
       publisher: "Penerbit ITB", 
       year: 2006, 
       isbn: "978979134573", 
-      categoryId: categories["Agama"], 
+      categoryId: categories["Filsafat"], 
       stock: 5, 
       coverImage: "/api/uploads/Filsafat Ilmu.jpg",
       description: "Analisis mendalam mengenai makna dan hakikat kebenaran dalam ilmu pengetahuan." 
