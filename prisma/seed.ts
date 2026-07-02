@@ -2,8 +2,18 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import bcrypt from "bcryptjs";
 
-// Initialize adapter just for the seeder
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL as string);
+// Parse DATABASE_URL and create adapter with longer timeouts for remote connections
+const dbUrl = new URL(process.env.DATABASE_URL as string);
+const adapter = new PrismaMariaDb({
+  host: dbUrl.hostname,
+  port: Number(dbUrl.port),
+  user: dbUrl.username,
+  password: dbUrl.password,
+  database: dbUrl.pathname.slice(1),
+  connectTimeout: 30000,
+  acquireTimeout: 30000,
+  connectionLimit: 5,
+});
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

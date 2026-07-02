@@ -6,7 +6,17 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient(): PrismaClient {
-  const adapter = new PrismaMariaDb(process.env.DATABASE_URL as string);
+  const dbUrl = new URL(process.env.DATABASE_URL as string);
+  const adapter = new PrismaMariaDb({
+    host: dbUrl.hostname,
+    port: Number(dbUrl.port),
+    user: dbUrl.username,
+    password: dbUrl.password,
+    database: dbUrl.pathname.slice(1),
+    connectTimeout: 30000,
+    acquireTimeout: 30000,
+    connectionLimit: 5,
+  });
   return new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === "development" ? ["query"] : [],
