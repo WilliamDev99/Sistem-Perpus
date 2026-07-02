@@ -22,10 +22,14 @@ export async function GET(request: NextRequest) {
     let copiedCount = 0;
 
     for (const file of files) {
-      if (file === ".gitkeep") continue;
+      if (file === ".gitkeep" || file === "lost+found") continue;
       
       const srcPath = path.join(gitUploadsDir, file);
       const destPath = path.join(persistentDir, file);
+      
+      // Get file stats to ensure we don't copy directories
+      const stat = fs.statSync(srcPath);
+      if (stat.isDirectory()) continue;
       
       // Copy each file to persistent volume if not already exists
       if (!fs.existsSync(destPath)) {
